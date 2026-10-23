@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Libra | Library Management System</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <aside class="sidebar">
+    <div class="brand"><span class="brand-icon">L</span><div><strong>Libra</strong><small>Library Management</small></div></div>
+    <nav>
+      <button class="nav-link active" data-view="dashboard">▦ <span>Dashboard</span></button>
+      <button class="nav-link" data-view="books">▤ <span>Book Inventory</span></button>
+      <button class="nav-link" data-view="borrowers">♙ <span>Borrowers</span></button>
+    </nav>
+    <div class="sidebar-note"><strong>Library workspace</strong><p>Keep your books and borrowing records organized.</p></div>
+  </aside>
+  <main class="main">
+    <header class="topbar"><div><p class="eyebrow">LIBRARY WORKSPACE</p><h1 id="page-title">Dashboard</h1></div><div class="topbar-right"><span class="status-dot"></span><span>Local workspace</span></div></header>
+    <section id="dashboard-view" class="view">
+      <div class="welcome-row"><div><h2>Welcome to Libra</h2><p>Here is an overview of your library.</p></div><button class="primary-btn" id="quick-add-book">＋ Add a book</button></div>
+      <div class="stats-grid">
+        <article class="stat-card"><span class="stat-label">Total book titles</span><strong id="stat-titles">0</strong><span class="stat-foot">Different titles in inventory</span></article>
+        <article class="stat-card"><span class="stat-label">Total copies</span><strong id="stat-copies">0</strong><span class="stat-foot">All copies in the library</span></article>
+        <article class="stat-card"><span class="stat-label">Books issued</span><strong id="stat-issued">0</strong><span class="stat-foot">Currently borrowed copies</span></article>
+        <article class="stat-card"><span class="stat-label">Available copies</span><strong id="stat-available">0</strong><span class="stat-foot">Ready to be borrowed</span></article>
+      </div>
+      <div class="content-grid">
+        <article class="panel"><div class="panel-heading"><div><h3>Recent activity</h3><p>Latest changes in your library</p></div></div><div id="recent-activity" class="activity-list"><p class="empty-state">No activity yet. Add a book to get started.</p></div></article>
+        <article class="panel"><div class="panel-heading"><div><h3>Books by category</h3><p>Titles grouped by category</p></div></div><div id="category-chart" class="category-list"><p class="empty-state">Add books to see category information.</p></div></article>
+      </div>
+    </section>
+    <section id="books-view" class="view hidden">
+      <div class="section-toolbar"><div><h2>Book inventory</h2><p>Add, update, search, or remove books.</p></div><button class="primary-btn" id="add-book-btn">＋ Add book</button></div>
+      <div class="filter-row"><input id="book-search" type="search" placeholder="Search by title, author, or ISBN..." aria-label="Search books"><select id="category-filter" aria-label="Filter by category"><option value="">All categories</option></select></div>
+      <div class="table-wrap"><table><thead><tr><th>Book</th><th>Author</th><th>Category</th><th>Copies</th><th>Available</th><th>Actions</th></tr></thead><tbody id="books-table"></tbody></table><p id="books-empty" class="empty-state">No books found. Add your first book.</p></div>
+    </section>
+    <section id="borrowers-view" class="view hidden">
+      <div class="section-toolbar"><div><h2>Borrowers &amp; issue/return</h2><p>Record who borrowed a book and when it is due.</p></div></div>
+      <article class="panel form-panel"><div class="panel-heading"><div><h3>Issue a book</h3><p>Choose an available book and enter borrower details.</p></div></div>
+        <form id="issue-form" class="form-grid">
+          <label>Borrower name<input id="borrower-name" required maxlength="80" placeholder="e.g. Asha Patil"></label>
+          <label>Student ID<input id="student-id" required maxlength="30" placeholder="e.g. TCET102"></label>
+          <label>Phone (optional)<input id="borrower-phone" type="tel" maxlength="20" placeholder="Phone number"></label>
+          <label>Book<select id="issue-book" required><option value="">Select an available book</option></select></label>
+          <label>Issue date<input id="issue-date" type="date" required></label>
+          <label>Due date<input id="due-date" type="date" required></label>
+          <div class="form-actions"><button class="primary-btn" type="submit">Issue book</button></div>
+        </form>
+      </article>
+      <article class="panel borrower-panel"><div class="panel-heading"><div><h3>Borrowing records</h3><p>Return a book when it comes back to the library.</p></div><select id="record-filter" aria-label="Filter borrowing records"><option value="active">Currently issued</option><option value="all">All records</option><option value="returned">Returned</option></select></div>
+        <div class="table-wrap"><table><thead><tr><th>Borrower</th><th>Book</th><th>Issue date</th><th>Due date</th><th>Status</th><th>Action</th></tr></thead><tbody id="borrowers-table"></tbody></table><p id="borrowers-empty" class="empty-state">No borrowing records to show.</p></div>
+      </article>
+    </section>
+    <footer>Libra Library Management System <span>Demo project · Data saved in this browser</span></footer>
+  </main>
+  <dialog id="book-dialog"><form id="book-form" method="dialog">
+    <div class="dialog-heading"><div><p class="eyebrow">INVENTORY</p><h2 id="book-dialog-title">Add a book</h2></div><button type="button" class="close-btn" id="close-dialog" aria-label="Close">×</button></div>
+    <input type="hidden" id="book-id">
+    <label>Book title<input id="book-title" required maxlength="120" placeholder="Enter book title"></label>
+    <label>Author<input id="book-author" required maxlength="100" placeholder="Enter author name"></label>
+    <div class="form-grid"><label>Category<input id="book-category" required maxlength="50" placeholder="e.g. Computer Science"></label><label>ISBN (optional)<input id="book-isbn" maxlength="30" placeholder="ISBN number"></label><label>Total copies<input id="book-copies" type="number" required min="1" max="9999" value="1"></label></div>
+    <p class="hint">You cannot reduce total copies below the number currently issued.</p>
+    <div class="dialog-actions"><button type="button" class="secondary-btn" id="cancel-dialog">Cancel</button><button type="submit" class="primary-btn">Save book</button></div>
+  </form></dialog>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script src="script.js"></script>
+</body>
+</html>
